@@ -55,12 +55,20 @@ module ActsAsChattable
     end
 
     module InstanceMethods
+
       # @return [ActiveRecord::Relation] all messages connected with user
       def messages(trash = false)
         result = self.class.messages_class_name.connected_with(self, trash)
         result.relation_context = self
 
         result
+      end
+
+      def messages_with(friend)
+        ActsAsChattable::Message.where("(received_messageable_id = #{self.id} AND sent_messageable_id = #{friend.id}) 
+               OR
+               (sent_messageable_id = #{self.id} AND received_messageable_id = #{friend.id})")
+        .order('id DESC')
       end
 
       # @return [ActiveRecord::Relation] returns all messages from inbox

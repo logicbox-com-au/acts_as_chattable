@@ -157,14 +157,14 @@ describe "ActsAsChattable" do
     @bob.messages.first.body == "Body"
   end
 
-  # describe "conversation" do
-  #   it "bob send message to alice, and alice reply to bob message and show proper tree" do
-  #     @reply_message =  @alice.reply_to(@message, "Re: Topic", "Body")
-
-  #     @reply_message.conversation.size.should == 2
-  #     @reply_message.conversation.last.topic.should == "Topic"
-  #     @reply_message.conversation.first.topic.should == "Re: Topic"
-  #   end
+  describe "conversation" do
+    it "bob send message to alice, and alice reply to bob message and show proper tree" do
+      @alice.send_message(@bob, "Re: Body")
+      @alice.messages_with(@bob).size.should eq(2)
+      @alice.messages_with(@bob).last.body.should == "Body"
+      @alice.messages_with(@bob).first.body.should == "Re: Body"
+      @bob.messages_with(@alice).size.should eq(2)
+    end
 
   #   it "bob send message to alice, alice answer, and bob answer for alice answer" do
   #     @reply_message = @alice.reply_to(@message, "Re: Topic", "Body")
@@ -177,7 +177,7 @@ describe "ActsAsChattable" do
   #     @message.conversation.first.should == @reply_reply_message
   #     @reply_reply_message.conversation.first.should == @reply_reply_message
   #   end
-  # end
+  end
 
   # describe "conversations" do
   #   before do

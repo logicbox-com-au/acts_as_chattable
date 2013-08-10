@@ -10,8 +10,5 @@ module ActsAsChattable
       end
     end
 
-    def conversations
-      map { |r| r.root.subtree.order("id desc").first }.uniq
-    end
   end
 end
