@@ -1,7 +1,9 @@
 ActsAsChattable
 =================
 
-The Acts As Chattable allows communication between the models.
+The Acts As Chattable allows communication between models. 
+
+It was designed for a mobile app that needs private communications with attachments, like the iPhone SMS app for example.
 
 [![Build Status](https://secure.travis-ci.org/LTe/acts-as-messageable.png)](http://travis-ci.org/LTe/acts-as-messageable)
 [![Dependency Status](https://gemnasium.com/LTe/acts-as-messageable.png)](https://gemnasium.com/LTe/acts-as-messageable)
@@ -33,8 +35,8 @@ Usage
 
 ```ruby
 class User < ActiveRecord::Base
-  acts_as_messageable :required   => :body                  # default [:body]
-                      :dependent  => :destroy               # default :nullify
+  acts_as_chattable :required   => :body                  # default [:body]
+                    :dependent  => :destroy               # default :nullify
 end
 ```
 
@@ -45,14 +47,14 @@ Send message
 @alice = User.first
 @bob   = User.last
 
-@alice.send_message(@bob, "Message topic", "Hi bob!")
-@bob.send_message(@alice, "Re: Message topic", "Hi alice!")
+@alice.send_message(@bob, "Hi bob!")
+@bob.send_message(@alice, Hi alice!")
 ```
 
 ## With hash
 
 ```ruby
-@alice.send_message(@bob, { :body => "Hash body", :topic => "Hash topic" })
+@alice.send_message(@bob, { :body => "Hash body" })
 ```
 
 Custom required (validation)
@@ -62,7 +64,7 @@ In User model
 
 ```ruby
 class User < ActiveRecord::Base
-  acts_as_messageable :required => :body
+  acts_as_chattable :required => :body
 end
 ```
 
@@ -76,55 +78,6 @@ end
 
 ```ruby
 @alice.send_message(@bob, "body")
-```
-
-## Required sequence
-
-```ruby
-class User < ActiveRecord::Base
-  acts_as_messageable :required => [:body, :topic]
-end
-
-@alice.send_message(@bob, "body", "topic")
-```
-
-## First topic
-
-```ruby
-class User < ActiveRecord::Base
-  acts_as_messageable :required => [:topic, :body]
-end
-
-@alice.send_message(@bob, "topic", "body")
-```
-
-Custom class
-============
-
-You can use your own class that will represent the message object. First of all create custom class
-
-```ruby
-class CustomMessage < ActsAsMessageable::Message
-  def capitalize_title
-    title.capitalize
-  end
-end
-```
-
-After that you can sepcify custom class in options.
-
-```ruby
-class User
-  acts_as_messageable :class_name => "CustomMessage"
-end
-```
-
-From now on, your message has custom class.
-
-```ruby
-@message = @alice.send_message(@bob, "hi!")
-@message # => #<CustomMessage:0x000000024b6278>
-@message.capitalize_title # => "Hi!"
 ```
 
 Conversation
@@ -288,32 +241,6 @@ end
 @alice.restore_message(@message) # @alice restore message from trash
 ```
 
-Group message
-=============
-
-## Enable group messages
-
-```ruby
-class User
-  acts_as_messageable :group_messages => true
-end
-```
-
-## How to join other users's conversation
-
-```ruby
-@message =  @alice.send_message(@bob, :topic => "Helou bob!", :body => "What's up?")
-@reply_message = @sukhi.reply_to(@message, "Hi there!", "I would like to join to this conversation!")
-@sec_reply_message = @bob.reply_to(@message, "Hi!", "Fine!")
-@third_reply_message = @alice.reply_to(@reply_message, "hi!", "no problem")
-```
-
-## Know the people involved in conversation
-
-```ruby
-@message.people # will give you participants users object
-@message.people # => [@alice, @bob, @sukhi]
-```
 
 Search
 ======
@@ -324,4 +251,4 @@ Search
 @alice.messages.search("Search me")  @alice seach text "Search me" from all messages
 ```
 
-Copyright © 2011-2012 Piotr Niełacny (http://ruby-blog.pl), released under the MIT license
+Copyright © 2013 Ben Bruscella, released under the MIT license
