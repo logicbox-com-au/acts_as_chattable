@@ -1,7 +1,7 @@
-ActsAsMessageable
+ActsAsChattable
 =================
 
-The Acts As Messageable allows communication between the models.
+The Acts As Chattable allows communication between the models.
 
 [![Build Status](https://secure.travis-ci.org/LTe/acts-as-messageable.png)](http://travis-ci.org/LTe/acts-as-messageable)
 [![Dependency Status](https://gemnasium.com/LTe/acts-as-messageable.png)](https://gemnasium.com/LTe/acts-as-messageable)
@@ -14,27 +14,17 @@ Usage
 
 To use it, add it to your Gemfile:
 
-### Rails 3
+### Rails 3 & 4
 
 ```ruby
-gem 'acts-as-messageable'
-```
-
-### Rails 2
-
-Use this [fork](http://github.com/openfirmware/acts-as-messageable)
-Thanks for [@openfirmware](http://github.com/openfirmware)
-
-```ruby
-gem 'acts-as-messageable', :git => 'git://github.com/openfirmware/acts-as-messageable.git', 
-                           :branch => 'rails2.3.11_compatible'
+gem 'acts_as_chattable'
 ```
 
 Post instalation
 ================
 
 ```
-rails g acts-as-messageable:migration table_name # default 'messages'
+rails g acts_as_chattable:migration
 rake db:migrate
 ```
 
@@ -43,28 +33,9 @@ Usage
 
 ```ruby
 class User < ActiveRecord::Base
-  acts_as_messageable :table_name => "table_with_messages", # default 'messages'
-                      :required   => :body                  # default [:topic, :body]
-                      :class_name => "CustomMessages"       # default "ActsAsMessageable::Message",
+  acts_as_messageable :required   => :body                  # default [:body]
                       :dependent  => :destroy               # default :nullify
-                      :group_messages => true               # default false
 end
-```
-
-Upgrade
-=======
-
-Just type once again
-
-```
-rails g acts-as-messageable:migration
-```
-
-And new migrations should be created.
-
-```
-~$ rails g acts-as-messageable:migration
-    create  db/migrate/20110811223435_add_recipient_permanent_delete_and_sender_permanent_delete_to_messages.rb
 ```
 
 Send message
