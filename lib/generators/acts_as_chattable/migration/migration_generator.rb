@@ -5,10 +5,9 @@ module ActsAsChattable
   class MigrationGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 
-    namespace "acts-as-messageable:migration"
+    namespace "acts_as_chattable:migration"
 
     source_root File.join(File.dirname(__FILE__), 'templates')
-    argument :table_name, :type => :string, :default => "messages"
 
     def self.next_migration_number(dirname)
       ActiveRecord::Generators::Base.next_migration_number(dirname)

@@ -1,6 +1,6 @@
 class CreateMessagesTable < ActiveRecord::Migration
   def self.up
-    create_table :<%= table_name %> do |t|
+    create_table :messages do |t|
       t.text :body
       t.string :attachment
       t.references :received_messageable, :polymorphic => true
@@ -11,10 +11,10 @@ class CreateMessagesTable < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :<%= table_name %>, [:sent_messageable_id, :received_messageable_id], :name => "acts_as_chattable_ids"
+    add_index :messages, [:sent_messageable_id, :received_messageable_id], :name => "acts_as_chattable_ids"
   end
 
   def self.down
-    drop_table :<%= table_name %>
+    drop_table :messages
   end
 end
