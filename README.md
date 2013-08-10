@@ -251,4 +251,14 @@ Search
 @alice.messages.search("Search me")  @alice seach text "Search me" from all messages
 ```
 
+Gem
+===========
+```
+rspec spec
+rake gemspec
+gem build acts_as_chattable.gemspec
+gem push acts_as_chattable-0.0.x.gem
+
+
+
 Copyright © 2013 Ben Bruscella, released under the MIT license

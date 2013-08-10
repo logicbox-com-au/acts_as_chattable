@@ -6,4 +6,4 @@
 spec/database.yml
 ./tags
 tags
-
+coverage
