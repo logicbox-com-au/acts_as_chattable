@@ -1,6 +1,4 @@
-require 'ancestry'
-
-module ActsAsMessageable
+module ActsAsChattable
   class Message < ::ActiveRecord::Base
     belongs_to :received_messageable, :polymorphic => true
     belongs_to :sent_messageable,     :polymorphic => true
@@ -8,11 +6,10 @@ module ActsAsMessageable
     attr_accessor   :removed, :restored
     cattr_accessor  :required
 
-    ActsAsMessageable.rails_api.new(self).default_scope("created_at desc")
+    ActsAsChattable.rails_api.new(self).default_scope("created_at desc")
 
     scope :are_from,          lambda { |*args| where(:sent_messageable_id => args.first, :sent_messageable_type => args.first.class.name) }
     scope :are_to,            lambda { |*args| where(:received_messageable_id => args.first, :received_messageable_type => args.first.class.name) }
-    scope :search,            lambda { |*args|  where("body like :search_txt or topic like :search_txt",:search_txt => "%#{args.first}%")}
     scope :connected_with,    lambda { |*args|  where("(sent_messageable_type = :sent_type and
                                                 sent_messageable_id = :sent_id and
                                                 sender_delete = :s_delete and sender_permanent_delete = :s_perm_delete) or
@@ -56,7 +53,7 @@ module ActsAsMessageable
     end
 
     def participant?(user)
-      user.class.group_messages || (to == user) || (from == user)
+      (to == user) || (from == user)
     end
 
     def conversation
@@ -69,10 +66,6 @@ module ActsAsMessageable
 
     def restore
       self.restored = true
-    end
-
-    def reply(*args)
-      to.reply_to(self, *args)
     end
 
     def people

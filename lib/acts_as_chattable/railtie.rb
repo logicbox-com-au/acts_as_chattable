@@ -1,14 +1,14 @@
 require 'active_record/railtie'
 require 'active_support/core_ext'
 
-module ActsAsMessageable
+module ActsAsChattable
   class Railtie < Rails::Railtie
     if defined?(ActiveRecord::Base)
-      ActiveRecord::Base.send :include, ActsAsMessageable::Model
+      ActiveRecord::Base.send :include, ActsAsChattable::Model
     end
 
     if defined?(ActiveRecord::Relation)
-      ActiveRecord::Relation.send :include, ActsAsMessageable::Relation
+      ActiveRecord::Relation.send :include, ActsAsChattable::Relation
     end
   end
 end

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe "ActsAsMessageable" do
+describe "ActsAsChattable" do
   before do
-    User.acts_as_messageable
+    User.acts_as_chattable
     @message = send_message
   end
 
@@ -30,15 +30,9 @@ describe "ActsAsMessageable" do
   end
 
   describe "send messages with bang" do
-    it "should raise exception" do
-      expect {
-        @alice.send_message!(@bob, :body => "body")
-      }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
     it "should return message object" do
-      @alice.send_message!(@bob, :body => "body", :topic => "topic").should 
-        be_kind_of ActsAsMessageable::Message
+      @alice.send_message!(@bob, :body => "body", :attachment => "test").should 
+        be_kind_of ActsAsChattable::Message
     end
   end
 
@@ -61,41 +55,6 @@ describe "ActsAsMessageable" do
       @men.messages.size.should be_equal(2)
       @men.sent_messages.size.should be_equal(1)
       @men.received_messages.size.should be_equal(1)
-    end
-  end
-
-  describe "reply to messages" do
-
-    it "pat should not be able to reply to a message from bob to alice" do
-      @reply_message =  @pat.reply_to(@message, "Re: Topic", "Body")
-      @reply_message.should be_nil
-    end
-
-    it "alice should be able to reply to a message from bob to alice" do
-      @reply_message =  @alice.reply_to(@message, "Re: Topic", "Body")
-      @reply_message.should_not be_nil
-      @bob.messages.are_from(@alice).count.should == 1
-      @alice.sent_messages.are_to(@bob).count.should == 1
-    end
-
-    it "alice should be able to reply to a message using the message object" do
-      @reply_message =  @message.reply("Re: Topic", "Body")
-      @reply_message.should_not be_nil
-      @bob.messages.are_from(@alice).count.should == 1
-      @alice.sent_messages.are_to(@bob).count.should == 1
-    end
-
-    it "bob try to add something to conversation" do
-      @reply_message = @bob.reply_to(@message, "Oh, I Forget", "1+1=2")
-      @reply_message.from.should  == @message.from
-      @reply_message.to.should    == @message.to
-    end
-
-    it "bob try to add something to conversation and should receive proper order" do
-      @reply_message = @bob.reply_to(@message, "Oh, I Forget", "1+1=2")
-      @sec_message   = @alice.reply_to(@message, "Yeah, right", "1+1=3!")
-
-      @message.conversation.should == [@sec_message, @reply_message, @message]
     end
   end
 
@@ -193,72 +152,72 @@ describe "ActsAsMessageable" do
     @bob.messages.find(@message.id) == @message
   end
 
-  it "message should have proper topic" do
+  it "message should have proper body" do
     @bob.messages.count.should == 1
-    @bob.messages.first.topic == "Topic"
+    @bob.messages.first.body == "Body"
   end
 
-  describe "conversation" do
-    it "bob send message to alice, and alice reply to bob message and show proper tree" do
-      @reply_message =  @alice.reply_to(@message, "Re: Topic", "Body")
+  # describe "conversation" do
+  #   it "bob send message to alice, and alice reply to bob message and show proper tree" do
+  #     @reply_message =  @alice.reply_to(@message, "Re: Topic", "Body")
 
-      @reply_message.conversation.size.should == 2
-      @reply_message.conversation.last.topic.should == "Topic"
-      @reply_message.conversation.first.topic.should == "Re: Topic"
-    end
+  #     @reply_message.conversation.size.should == 2
+  #     @reply_message.conversation.last.topic.should == "Topic"
+  #     @reply_message.conversation.first.topic.should == "Re: Topic"
+  #   end
 
-    it "bob send message to alice, alice answer, and bob answer for alice answer" do
-      @reply_message = @alice.reply_to(@message, "Re: Topic", "Body")
-      @reply_reply_message = @bob.reply_to(@reply_message, "Re: Re: Topic", "Body")
+  #   it "bob send message to alice, alice answer, and bob answer for alice answer" do
+  #     @reply_message = @alice.reply_to(@message, "Re: Topic", "Body")
+  #     @reply_reply_message = @bob.reply_to(@reply_message, "Re: Re: Topic", "Body")
 
-      [@message, @reply_message, @reply_reply_message].each do |m|
-        m.conversation.size.should == 3
-      end
+  #     [@message, @reply_message, @reply_reply_message].each do |m|
+  #       m.conversation.size.should == 3
+  #     end
 
-      @message.conversation.first.should == @reply_reply_message
-      @reply_reply_message.conversation.first.should == @reply_reply_message
-    end
-  end
+  #     @message.conversation.first.should == @reply_reply_message
+  #     @reply_reply_message.conversation.first.should == @reply_reply_message
+  #   end
+  # end
 
-  describe "conversations" do
-    before do
-      @reply_message = @message.reply("Re: Topic", "Body")
-      @reply_reply_message = @reply_message.reply("Re: Re: Topic", "Body")
-    end
+  # describe "conversations" do
+  #   before do
+  #     @reply_message = @message.reply("Re: Topic", "Body")
+  #     @reply_reply_message = @reply_message.reply("Re: Re: Topic", "Body")
+  #   end
 
-    it "bob send message to alice and alice reply" do
-      @bob.messages.conversations.should == [@reply_reply_message]
-      @reply_message.conversation.should == [@reply_reply_message, @reply_message, @message]
-    end
+  #   it "bob send message to alice and alice reply" do
+  #     @bob.messages.conversations.should == [@reply_reply_message]
+  #     @reply_message.conversation.should == [@reply_reply_message, @reply_message, @message]
+  #   end
 
-    it "show conversations in proper order" do
-      @sec_message = @bob.send_message(@alice, "Hi", "Alice!")
-      @sec_reply = @sec_message.reply("Re: Hi", "Fine!")
-      @bob.received_messages.conversations.map(&:id).should == [@sec_reply.id, @reply_reply_message.id]
-      @sec_reply.conversation.to_a.should == [@sec_reply, @sec_message]
-    end
-  end
+  #   it "show conversations in proper order" do
+  #     @sec_message = @bob.send_message(@alice, "Hi", "Alice!")
+  #     @sec_reply = @sec_message.reply("Re: Hi", "Fine!")
+  #     @bob.received_messages.conversations.map(&:id).should == [@sec_reply.id, @reply_reply_message.id]
+  #     @sec_reply.conversation.to_a.should == [@sec_reply, @sec_message]
+  #   end
+  # end
 
-  describe "search text from messages" do
-    before do
-      @reply_message = @message.reply("Re: Topic", "Body : I am fine")
-      @reply_reply_message = @reply_message.reply("Re: Re: Topic", "Fine too")
-    end
+  # describe "search text from messages" do
+  #   before do
+  #     @reply_message = @message.reply("Re: Topic", "Body : I am fine")
+  #     @reply_reply_message = @reply_message.reply("Re: Re: Topic", "Fine too")
+  #   end
 
-    it "bob should be able to search text from messages" do
-      recordset = @bob.messages.search("I am fine")
-      recordset.count.should == 1
-      recordset.should_not be_nil
-    end
-  end
+  #   it "bob should be able to search text from messages" do
+  #     recordset = @bob.messages.search("I am fine")
+  #     recordset.count.should == 1
+  #     recordset.should_not be_nil
+  #   end
+  # end
 
-  describe "send messages with hash" do
-    it "send message with hash" do
-      @message = @bob.send_message(@alice, {:body => "Body", :topic => "Topic"})
-      @message.topic.should == "Topic"
-      @message.body.should == "Body"
-    end
-  end
+  # describe "send messages with hash" do
+  #   it "send message with hash" do
+  #     @message = @bob.send_message(@alice, {:body => "Body", :topic => "Topic"})
+  #     @message.topic.should == "Topic"
+  #     @message.body.should == "Body"
+  #   end
+  # end
 
   it "messages should return in right order :created_at" do
     @message = send_message(@bob, @alice, "Example", "Example Body")

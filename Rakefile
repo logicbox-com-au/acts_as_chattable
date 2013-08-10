@@ -13,11 +13,11 @@ require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  gem.name = "acts-as-messageable"
-  gem.email = "piotr.nielacny@gmail.com"
-  gem.summary = "Make user messageable!;-)"
-  gem.homepage = "http://github.com/LTe/acts-as-messageable"
-  gem.authors = ["Piotr Nielacny"]
+  gem.name = "acts_as_chattable"
+  gem.email = "ben@logicbox.com.au"
+  gem.summary = "Make user chattable!"
+  gem.homepage = "https://github.com/logicbox-com-au/acts_as_chattable"
+  gem.authors = ["Ben Bruscella"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

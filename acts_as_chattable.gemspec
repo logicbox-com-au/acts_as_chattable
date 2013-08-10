@@ -4,54 +4,39 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "acts-as-messageable"
+  s.name = "acts_as_chattable"
   s.version = "0.4.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Piotr Nielacny"]
-  s.date = "2013-07-26"
-  s.email = "piotr.nielacny@gmail.com"
+  s.authors = ["Ben Bruscella"]
+  s.date = "2013-08-10"
+  s.email = "ben@logicbox.com.au"
   s.extra_rdoc_files = [
     "README.md"
   ]
   s.files = [
-    ".coveralls.yml",
     ".rspec",
-    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "MIT-LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
-    "acts-as-messageable.gemspec",
     "gemfiles/Gemfile-3.0",
     "gemfiles/Gemfile-3.1",
     "gemfiles/Gemfile-3.2",
     "gemfiles/Gemfile-4.0",
-    "lib/acts-as-messageable.rb",
-    "lib/acts-as-messageable/message.rb",
-    "lib/acts-as-messageable/model.rb",
-    "lib/acts-as-messageable/rails3.rb",
-    "lib/acts-as-messageable/rails4.rb",
-    "lib/acts-as-messageable/railtie.rb",
-    "lib/acts-as-messageable/relation.rb",
-    "lib/generators/acts-as-messageable/migration/migration_generator.rb",
-    "lib/generators/acts-as-messageable/migration/templates/migration.rb",
-    "lib/generators/acts-as-messageable/migration/templates/migration_permanent.rb",
-    "spec/acts-as-messageable_spec.rb",
     "spec/custom-class_spec.rb",
     "spec/custom-required_spec.rb",
-    "spec/group-messages_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/admin.rb",
     "spec/support/send_message.rb",
     "spec/support/user.rb"
   ]
-  s.homepage = "http://github.com/LTe/acts-as-messageable"
+  s.homepage = "https://github.com/logicbox-com-au/acts_as_chattable"
   s.require_paths = ["lib"]
   s.rubygems_version = "2.0.3"
-  s.summary = "Make user messageable!;-)"
+  s.summary = "Make user chattable!"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
@@ -59,7 +44,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
-      s.add_runtime_dependency(%q<ancestry>, [">= 1.3.0"])
+      s.add_runtime_dependency(%q<dragonfly>, [">= 0.9.15"])
       s.add_runtime_dependency(%q<railties>, [">= 3.0.0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.0"])
@@ -68,7 +53,7 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_dependency(%q<activesupport>, [">= 3.0.0"])
-      s.add_dependency(%q<ancestry>, [">= 1.3.0"])
+      s.add_dependency(%q<dragonfly>, [">= 0.9.15"])
       s.add_dependency(%q<railties>, [">= 3.0.0"])
       s.add_dependency(%q<rspec>, ["~> 2.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.0"])
@@ -78,7 +63,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<activerecord>, [">= 3.0.0"])
     s.add_dependency(%q<activesupport>, [">= 3.0.0"])
-    s.add_dependency(%q<ancestry>, [">= 1.3.0"])
+    s.add_dependency(%q<dragonfly>, [">= 0.9.15"])
     s.add_dependency(%q<railties>, [">= 3.0.0"])
     s.add_dependency(%q<rspec>, ["~> 2.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.0"])

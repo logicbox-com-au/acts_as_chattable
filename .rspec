@@ -1,1 +1,4 @@
--fd -color
+--color
+--fail-fast
+--profile
+--format documentation

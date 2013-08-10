@@ -1,3 +1,3 @@
 class Admin < ActiveRecord::Base
-  acts_as_messageable
+  acts_as_chattable
 end

@@ -1,7 +1,7 @@
 require 'rails/generators/migration'
 require 'rails/generators/active_record'
 
-module ActsAsMessageable
+module ActsAsChattable
   class MigrationGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 

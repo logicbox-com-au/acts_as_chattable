@@ -1,4 +1,4 @@
-module ActsAsMessageable
+module ActsAsChattable
   module Relation
     attr_accessor :relation_context
 

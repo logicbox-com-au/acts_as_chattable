@@ -1,4 +1,4 @@
-module ActsAsMessageable
+module ActsAsChattable
   class Rails3
     def initialize(subject)
       @subject = subject

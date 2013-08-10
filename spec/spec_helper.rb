@@ -8,7 +8,7 @@ ActiveRecord::Base.logger.level = 3
 require 'coveralls'
 Coveralls.wear!
 
-require 'acts-as-messageable'
+require 'acts_as_chattable'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
@@ -38,8 +38,8 @@ end
 def create_database
   ActiveRecord::Schema.define(:version => 1) do
     create_table :messages do |t|
-      t.string :topic
       t.text :body
+      t.string :attachment
       t.references :received_messageable, :polymorphic => true
       t.references :sent_messageable, :polymorphic => true
       t.boolean :opened, :default => false
@@ -47,7 +47,6 @@ def create_database
       t.boolean :sender_delete, :default => false
       t.boolean :recipient_permanent_delete, :default => false
       t.boolean :sender_permanent_delete, :default => false
-      t.string :ancestry
       t.timestamps
     end
 
