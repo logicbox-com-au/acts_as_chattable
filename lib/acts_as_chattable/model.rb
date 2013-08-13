@@ -68,7 +68,7 @@ module ActsAsChattable
         ActsAsChattable::Message.where("(received_messageable_id = #{self.id} AND sent_messageable_id = #{friend.id}) 
                OR
                (sent_messageable_id = #{self.id} AND received_messageable_id = #{friend.id})")
-        .order('id DESC').all
+        .order('id DESC')
       end
 
       # @return [ActiveRecord::Relation] returns all messages from inbox
